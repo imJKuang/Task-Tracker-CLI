@@ -1,7 +1,7 @@
 #include "../include/json.h"
 
 //writes a task object to a JSON file.
-void writeTaskToJson(const Task& task, const char* filename) {
+void writeTaskToJson(struct Task task, const char* filename) {
     std::ifstream file(filename);
     std::string jsonContent;
     if (file.is_open()) {

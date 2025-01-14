@@ -1,4 +1,5 @@
 #include "../include/cli.h"
+#include "../include/json.h"
 
 void CLI::addTask(const std::string& description){ 
     Task newTask;

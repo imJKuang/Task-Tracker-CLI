@@ -1,6 +1,6 @@
 #include "../include/cli.h"
 
-void addTask(const std::string& description){ 
+void CLI::addTask(const std::string& description){ 
     Task newTask;
     newTask.id = getLastId("tasks.json") + 1;
     newTask.description = description;
@@ -12,7 +12,7 @@ void addTask(const std::string& description){
 }
 
 
-void listTasks()
+void CLI::listTasks()
 { 
     std::cout << "List of Tasks: \n";
     std::vector<Task> tasks = parseJsonFile("tasks.json");
@@ -28,7 +28,7 @@ void listTasks()
     }
 }
 
-void deleteTask(int id)
+void CLI::deleteTask(int id)
 { 
     std::vector<Task> updatedTasks;
     std::vector<Task> tasks = parseJsonFile("tasks.json");
@@ -48,15 +48,15 @@ void deleteTask(int id)
     }
 
     remove("tasks.json");
-    rename("tasks.json.tmp","tasks,json");
+    rename("tasks.json.tmp","tasks.json");
 }
 
-void updateTask(int id, std::string& description)
+void CLI::updateTask(int id, std::string& description)
 { 
     std::vector<Task> updatedTasks;
     std::vector<Task> tasks = parseJsonFile("tasks.json");
     for(auto& task : tasks){ 
-        if(task.id = id){
+        if(task.id == id){
             task.description = description;
             task.updatedAt = getCurrentTime();
             updatedTasks.push_back(task);
@@ -72,7 +72,7 @@ void updateTask(int id, std::string& description)
     }    
 }
 
-void markInProgress(int id){
+void CLI::markInProgress(int id){
     std::vector<Task> updatedTasks;
     std::vector<Task> tasks = parseJsonFile("tasks.json");
 
@@ -94,7 +94,7 @@ void markInProgress(int id){
     rename("tasks.json.tmp", "tasks.json");
 }
 
-void markDone(int id){ 
+void CLI::markDone(int id){ 
     std::vector<Task> updatedTasks;
     std::vector<Task> tasks = parseJsonFile("tasks.json");
 
@@ -115,7 +115,7 @@ void markDone(int id){
     remove("tasks.json");
     rename("tasks.json.tmp", "tasks.json");
 }
-void listTaskByStatus(const std::string& status){
+void CLI::listTaskByStatus(const std::string& status){
     std::cout << "List of " << status << "task(s)\n";
     std::vector<Task> tasks = parseJsonFile("tasks.json");
     for(const auto& task : tasks){ 

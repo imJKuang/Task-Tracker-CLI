@@ -4,15 +4,9 @@
 void writeTaskToJson(struct Task task, const char* filename){ 
     
     std::ifstream file(filename);
+    std::string jsonContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
 
-
-    std::string jsonContent;
-    std::stringstream buffer;
-
-    //read all content of the file using rdbuf(). 
-    //it creates a string and save all content in a string type
-    buffer <<file.rdbuf();
-    jsonContent = buffer.str();
 
     size_t startPos = jsonContent.find_last_of('[') + 1;
     size_t endPos = jsonContent.find_last_of(']'); 
@@ -38,64 +32,48 @@ void writeTaskToJson(struct Task task, const char* filename){
 }
 
 //Parse a  JSON file and returns a vector of a task objects
-std::vector<Task> parseJsonFile(const std::string& filename){ 
+std::vector<Task> parseJsonFile(const std::string& filename) {
     std::vector<Task> tasks;
 
-
-
     std::ifstream file(filename);
-    std::string jsonContent;
-    std::stringstream buffer;
-
-    //read all content of the file using rdbuf(). 
-    //it creates a string and save all content in a string type
-    buffer <<file.rdbuf();
-    jsonContent = buffer.str();
+    std::string jsonContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
 
-    size_t startPos = jsonContent.find_last_of('[') + 1;
-    size_t endPos = jsonContent.find_last_of(']'); 
+    size_t startPos = jsonContent.find('[') + 1;
+    size_t endPos = jsonContent.find_last_of(']');
 
-    if (startPos != std::string::npos && endPos != std::string::npos){
+    if (startPos != std::string::npos && endPos != std::string::npos) {
         std::string tasksJson = jsonContent.substr(startPos, endPos - startPos);
 
         size_t taskStartPos = 0;
         size_t taskEndPos = tasksJson.find('}');
 
-        while (taskEndPos != std::string::npos){ 
-            std::string taskJson = jsonContent.substr(startPos, endPos - startPos);
+        while (taskEndPos != std::string::npos) {
+            std::string taskJson = tasksJson.substr(taskStartPos, taskEndPos - taskStartPos + 1);
 
             Task task;
-
-            //id
             size_t idStartPos = taskJson.find("\"id\": ") + 6;
             size_t idEndPos = taskJson.find(',', idStartPos);
-            task.id = stoi(taskJson.substr(idStartPos, idEndPos - idStartPos)); 
+            task.id = stoi(taskJson.substr(idStartPos, idEndPos - idStartPos));
 
-            //description
             size_t descStartPos = taskJson.find("\"description\": \"") + 16;
-            size_t descEndpos = taskJson.find('\"', descStartPos );
-            task.description = taskJson.substr(descStartPos, descEndpos - descStartPos); 
+            size_t descEndPos = taskJson.find('\"', descStartPos);
+            task.description = taskJson.substr(descStartPos, descEndPos - descStartPos);
 
-            //status
+
             size_t statusStartPos = taskJson.find("\"status\": \"") + 11;
-            size_t statusEndpos = taskJson.find('\"', statusStartPos );
-            task.status = taskJson.substr(statusStartPos, statusEndpos - statusStartPos);
+            size_t statusEndPos = taskJson.find('\"', statusStartPos);
+            task.status = taskJson.substr(statusStartPos, statusEndPos - statusStartPos);
 
-            //createdAt
             size_t createdAtStartPos = taskJson.find("\"createdAt\": \"") + 14;
-            size_t createdAtEndpos = taskJson.find('\"', createdAtStartPos );
-            task.createdAt = taskJson.substr(createdAtStartPos, createdAtEndpos - createdAtStartPos);  \
+            size_t createdAtEndPos = taskJson.find('\"', createdAtStartPos);
+            task.createdAt = taskJson.substr(createdAtStartPos, createdAtEndPos - createdAtStartPos);
 
-
-            //updatedAt
             size_t updatedAtStartPos = taskJson.find("\"updatedAt\": \"") + 14;
-            size_t updatedAtEndpos = taskJson.find('\"', updatedAtStartPos );
-            task.updatedAt = taskJson.substr(updatedAtStartPos, updatedAtEndpos - updatedAtStartPos);  
+            size_t updatedAtEndPos = taskJson.find('\"', updatedAtStartPos);
+            task.updatedAt = taskJson.substr(updatedAtStartPos, updatedAtEndPos - updatedAtStartPos);
 
             tasks.push_back(task);
-            taskStartPos = taskEndPos + 1;
-            taskEndPos = tasksJson.find('}', taskStartPos);   
         }
     }
 

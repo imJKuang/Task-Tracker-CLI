@@ -6,6 +6,7 @@
 #include <string> 
 #include <vector> 
 #include <iostream> 
+#include <sstream>
 #include "task.h"
 #include "utils.h"
 #include "json.h"

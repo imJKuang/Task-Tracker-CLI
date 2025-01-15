@@ -1,4 +1,5 @@
 #include "../include/cli.h"
+#include "../include/json.h"
 
 void CLI::addTask(const std::string& description){ 
     Task newTask;
@@ -28,28 +29,35 @@ void CLI::listTasks()
     }
 }
 
-void CLI::deleteTask(int id)
-{ 
-    std::vector<Task> updatedTasks;
+void CLI::deleteTask(int id) {
     std::vector<Task> tasks = parseJsonFile("tasks.json");
+    std::vector<Task> updatedTasks;
 
-    for(int i = 1; i < id; i++){
-        if(i !=id){ 
-            updatedTasks.push_back(tasks[i-1]);
+    for (const auto& task : tasks) {
+        if (task.id != id) {
+            updatedTasks.push_back(task);
         }
     }
-    for (int i = id + 1; i <= tasks.size(); i++){ 
-        tasks[i-1].id = i -1;
-        updatedTasks.push_back(tasks[i-1]);
-    }
 
-    for(const auto& task : tasks){ 
-        writeTaskToJson(task, "tasks.json.tmp");
+    // Rewrite the JSON file with the updated tasks
+    std::ofstream fileOut("tasks.json", std::ios::trunc);
+    fileOut << "[\n";
+    for (size_t i = 0; i < updatedTasks.size(); ++i) {
+        const auto& task = updatedTasks[i];
+        fileOut << "    {\n"
+                << "        \"id\": " << task.id << ",\n"
+                << "        \"description\": \"" << task.description << "\",\n"
+                << "        \"status\": \"" << task.status << "\",\n"
+                << "        \"createdAt\": \"" << task.createdAt << "\",\n"
+                << "        \"updatedAt\": \"" << task.updatedAt << "\"\n"
+                << "    }";
+        if (i < updatedTasks.size() - 1) fileOut << ",";
+        fileOut << "\n";
     }
-
-    remove("tasks.json");
-    rename("tasks.json.tmp","tasks.json");
+    fileOut << "]";
+    fileOut.close();
 }
+
 
 void CLI::updateTask(int id, std::string& description)
 { 

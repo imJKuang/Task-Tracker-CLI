@@ -5,13 +5,13 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": [],
+      "args": ["add", "new task"],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/23150/projects/c++/Task-Tracker-CLI/task_tracker_CLI/scr",
-      "program": "c:/Users/23150/projects/c++/Task-Tracker-CLI/task_tracker_CLI/scr/build/Debug/outDebug",
+      "cwd": "${workspaceFolder}/scr/task_tracker.exe",
+      "program": "${workspaceFolder}/scr/task_tracker.exe",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",

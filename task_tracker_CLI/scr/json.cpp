@@ -1,43 +1,58 @@
 #include "../include/json.h"
 
-//writes a task object to a JSON file.
 void writeTaskToJson(struct Task task, const char* filename) {
+    // Read existing content
     std::ifstream file(filename);
     std::string jsonContent;
+    
     if (file.is_open()) {
-        jsonContent.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        // Read the entire file content
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        jsonContent = buffer.str();
         file.close();
     }
 
-    // If file is empty or invalid, start a new JSON array
+    // If file is empty or doesn't contain a valid JSON array, initialize it
     if (jsonContent.empty() || jsonContent.find('[') == std::string::npos) {
-        jsonContent = "[]";
+        jsonContent = "[\n";
     }
 
-    // Find the last ']' to append the task
+    // Create the new task JSON
+    std::string newTaskJson =
+        "    {\n"
+        "        \"id\": " + std::to_string(task.id) + ",\n"
+        "        \"description\": \"" + task.description + "\",\n"
+        "        \"status\": \"" + task.status + "\",\n"
+        "        \"createdAt\": \"" + task.createdAt + "\",\n"
+        "        \"updatedAt\": \"" + task.updatedAt + "\"\n"
+        "    }";
+
+    // Find the last closing bracket
     size_t endPos = jsonContent.find_last_of(']');
+    
     if (endPos != std::string::npos) {
-        std::string newTaskJson =
-            "    {\n"
-            "        \"id\": " + std::to_string(task.id) + ",\n"
-            "        \"description\": \"" + task.description + "\",\n"
-            "        \"status\": \"" + task.status + "\",\n"
-            "        \"createdAt\": \"" + task.createdAt + "\",\n"
-            "        \"updatedAt\": \"" + task.updatedAt + "\"\n"
-            "    }";
-
-        if (endPos > 1 && jsonContent[endPos - 1] != '[') {
-            // Add a comma before the new task if the array is not empty
-            newTaskJson = ",\n" + newTaskJson;
+        // Remove the closing bracket temporarily
+        jsonContent = jsonContent.substr(0, endPos);
+        
+        // Add comma if there are existing tasks
+        if (jsonContent.find('{') != std::string::npos) {
+            jsonContent += ",\n";
         }
-
-        jsonContent.insert(endPos, newTaskJson);
+        
+        // Add the new task and close the array
+        jsonContent += newTaskJson + "\n]";
+    } else {
+        // If no closing bracket was found, start fresh
+        jsonContent = "[\n" + newTaskJson + "\n]";
     }
 
-    // Write back to file
-    std::ofstream fileOut(filename, std::ios::trunc);
-    fileOut << jsonContent;
-    fileOut.close();
+    // Write the entire content back to file
+    std::ofstream fileOut(filename);
+    if (fileOut.is_open()) {
+        fileOut << jsonContent;
+        fileOut.close();
+    }
 }
 
 //Parses a JSON file and returns a vector of Task objects.

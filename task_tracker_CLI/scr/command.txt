@@ -17,3 +17,6 @@ task_tacker list
 task_tacker list done
 task_tacker list todo
 task_tacker list in-progress
+
+#to compile in, go to TASK_TRACKERE_CLI/scr directory and run 
+"g++ -std=c++11 main.cpp cli.cpp json.cpp utils.cpp -o task_tracker.exe"

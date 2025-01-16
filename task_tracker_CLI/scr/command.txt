@@ -1,22 +1,22 @@
 # Adding a new task
-task_tacker add "Buy groceries"
+.\task_tracker.exe add "Buy groceries"
 # Output: Task added successfully (ID: 1)
 
 # Updating and deleting tasks
-task_tacker update 1 "Buy groceries and cook dinner"
-task_tacker delete 1
+.\task_tracker.exe update 1 "Buy groceries and cook dinner"
+.\task_tracker.exe delete 1
 
 # Marking a task as in progress or done
-task_tacker mark-in-progress 1
-task_tacker mark-done 1
+.\task_tracker.exe mark-in-progress 1
+.\task_tracker.exe mark-done 1
 
 # Listing all tasks
-task_tacker list
+.\task_tracker.exe list
 
 # Listing tasks by status
-task_tacker list done
-task_tacker list todo
-task_tacker list in-progress
+.\task_tracker.exe list done
+.\task_tracker.exe list todo
+.\task_tracker.exe list in-progress
 
 #to compile in, go to TASK_TRACKERE_CLI/scr directory and run 
 "g++ -std=c++11 main.cpp cli.cpp json.cpp utils.cpp -o task_tracker.exe"

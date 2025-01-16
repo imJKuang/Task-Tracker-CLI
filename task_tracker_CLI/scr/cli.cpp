@@ -22,7 +22,7 @@ void CLI::listTasks()
             std::cout << task.id << ". " << task.description << std::endl;
             std::cout << "Task status: " << task.status << std::endl;
             std::cout << "Task createdAt: " << task.createdAt <<std::endl;
-            std::cout << "Task updatedAt: " << task.updatedAt << std::endl;
+            std::cout << "Task updatedAt: " << task.updatedAt << std::endl<< std::endl;
         } else{
             std::cout << "Task doesnt have a description!\n";
         }
@@ -74,10 +74,10 @@ void CLI::updateTask(int id, std::string& description)
     }
     for (const auto& task : updatedTasks){ 
         writeTaskToJson(task,"tasks.json.tmp");
+    }   
 
-        remove("tasks.json");
-        rename("tasks.json.tmp","tasks.json");
-    }    
+    remove("tasks.json");
+    rename("tasks.json.tmp","tasks.json");
 }
 
 void CLI::markInProgress(int id){

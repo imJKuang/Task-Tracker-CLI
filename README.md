@@ -18,13 +18,15 @@ Run the following command to build the project:
 ```
 g++ -std=c++11 main.cpp cli.cpp json.cpp utils.cpp -o task_tracker.exe
 
+```
+
+
+List of Commands
+```
 # Adding a new task
 .\task_tracker.exe add "Buy groceries"
 # Output: Task added successfully (ID: 1)
-```
 
-##List of Commands
-```
 # Updating and deleting tasks
 .\task_tracker.exe update 1 "Buy groceries and cook dinner"
 .\task_tracker.exe delete 1

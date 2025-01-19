@@ -15,15 +15,16 @@ cd task_tracker_CLI/scr
 
 Run the following command to build the project:
 
-```bash
+```
 g++ -std=c++11 main.cpp cli.cpp json.cpp utils.cpp -o task_tracker.exe
 
 # Adding a new task
 .\task_tracker.exe add "Buy groceries"
 # Output: Task added successfully (ID: 1)
-```bash
+```
 
-```bash
+##List of Commands
+```
 # Updating and deleting tasks
 .\task_tracker.exe update 1 "Buy groceries and cook dinner"
 .\task_tracker.exe delete 1
@@ -39,4 +40,4 @@ g++ -std=c++11 main.cpp cli.cpp json.cpp utils.cpp -o task_tracker.exe
 .\task_tracker.exe list done
 .\task_tracker.exe list todo
 .\task_tracker.exe list in-progress
-```bash
+```

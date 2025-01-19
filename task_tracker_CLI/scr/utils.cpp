@@ -1,5 +1,6 @@
 #include "../include/utils.h"
 
+//get the current system time
 std::string getCurrentTime(){ 
     auto now = std::chrono::system_clock::now();
     std::time_t nowTimeT = std::chrono::system_clock::to_time_t(now);
@@ -11,6 +12,8 @@ std::string getCurrentTime(){
     return currentTime;
 }
 
+
+//get the last ID of task in tasks.json
 int getLastId(const std::string& filename){ 
     int maxId = 0;
     std::vector<Task> tasks = parseJsonFile(filename);

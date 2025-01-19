@@ -1,6 +1,8 @@
 #include "../include/cli.h"
 #include "../include/json.h"
 
+
+//add task to task.json file 
 void CLI::addTask(const std::string& description){ 
     Task newTask;
     newTask.id = getLastId("tasks.json") + 1;
@@ -13,6 +15,8 @@ void CLI::addTask(const std::string& description){
 }
 
 
+
+//read the tasks.json file and list all the tasks. 
 void CLI::listTasks()
 { 
     std::cout << "List of Tasks: \n";
@@ -29,6 +33,8 @@ void CLI::listTasks()
     }
 }
 
+
+//take the id of a task and remove that from tasks.json 
 void CLI::deleteTask(int id) {
     std::vector<Task> tasks = parseJsonFile("tasks.json");
     std::vector<Task> updatedTasks;
@@ -58,7 +64,7 @@ void CLI::deleteTask(int id) {
     fileOut.close();
 }
 
-
+//take the id of a task and update the description of that task and update its updateAT 
 void CLI::updateTask(int id, std::string& description)
 { 
     std::vector<Task> updatedTasks;
@@ -80,6 +86,8 @@ void CLI::updateTask(int id, std::string& description)
     rename("tasks.json.tmp","tasks.json");
 }
 
+
+//take the id of a task and mark its status as In progess
 void CLI::markInProgress(int id){
     std::vector<Task> updatedTasks;
     std::vector<Task> tasks = parseJsonFile("tasks.json");
@@ -102,6 +110,8 @@ void CLI::markInProgress(int id){
     rename("tasks.json.tmp", "tasks.json");
 }
 
+
+//take the id of a task and mark its status as done
 void CLI::markDone(int id){ 
     std::vector<Task> updatedTasks;
     std::vector<Task> tasks = parseJsonFile("tasks.json");
@@ -123,6 +133,9 @@ void CLI::markDone(int id){
     remove("tasks.json");
     rename("tasks.json.tmp", "tasks.json");
 }
+
+
+//list the tasks by status 
 void CLI::listTaskByStatus(const std::string& status){
     std::cout << "List of " << status << "task(s)\n";
     std::vector<Task> tasks = parseJsonFile("tasks.json");
